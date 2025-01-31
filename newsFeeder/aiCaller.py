@@ -4,7 +4,7 @@ import ollama
 def getAiSummary(message):
     print('in ai gen')
     client = ollama.Client(
-        host='127.0.0.1:11434',
+        host='https://ollama-deployment.onwireway.online',
     )
     response = client.generate(
         model='llama3.2',
@@ -18,7 +18,7 @@ def getAiSummary(message):
 def getAiQualityFilter(message):
     print('in ai filter')
     client = ollama.Client(
-        host='127.0.0.1:11434',
+        host='https://ollama-deployment.onwireway.online',
     )
     response = client.chat(
         options={
@@ -45,7 +45,7 @@ def getAiQualityFilter(message):
 
 def getAiglossary(message):
     client = ollama.Client(
-        host='127.0.0.1:11434',
+        host='https://ollama-deployment.onwireway.online',
     )
     response = client.chat(
         model='llama3.2',
