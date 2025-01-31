@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=1.0, initial-scale=1.0">
+    <title>tetrius</title>
+    <style>
+        @font-face {
+            font-family: 'PlayfairDisplay';
+            src: url('fonts/PlayfairDisplay-Regular.ttf') format('truetype');
+        }
+
+        * {
+            box-sizing: border-box;
+            color: rgb(84, 84, 84);
+            /*cursor: none;*/
+        }
+
+        body,
+        html {
+            padding: 0px;
+            margin: 0px;
+            width: 100%;
+            height: 100%;
+            background-color: #ffe4bc;
+            font-family: 'PlayfairDisplay';
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 80px;
+            box-sizing: border-box;
+            flex-direction: column;
+            padding-top: 5px;
+            padding-bottom: 5px;
+        }
+        .bracket-after {
+            width: 100%;
+            font-size: 80px;
+            font-family: 'PlayfairDisplay';
+            margin-top: 0px;
+        }
+        .bracket-before {
+            width: 100%;
+            font-size: 80px;
+            font-family: 'PlayfairDisplay';
+            margin-bottom: 0px;
+        }
+        .credits {
+            position: absolute;
+            left: 20px;
+            bottom: 10px;
+        }
+        
+        .qrCode{
+            position: absolute;
+            right: 20px;
+            bottom: 35px;
+            height: 255px;
+        }
+    
+    </style>
+</head>
+
+<body>
+    <h1 class="bracket-before">«</h1>
+    <h1 id="content"></h1>
+    <h1 class="bracket-after">»</h1>
+    <p target="_blank" class="credits">
+        Quelle: <a id="source"></a></br>
+        Article: <a id="title"></a>
+    </p>
+    <img class="qrCode" id="qrCode"></img>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const exampleText = `Article loading...`;
+
+            loadText(exampleText);
+
+            let lastdata = exampleText;
+
+            function fetchLatestArticle() {
+                        
+                fetch('/getLatestArticle')
+                    .then(response => response.json())                    
+                    .then(data => {
+                        const latestArticle = data[0];
+                        const latestArticleAuthor = data[1]
+                        const latestArticleTitle = data[2]
+                        const latestQrCode = data[3]
+                        if (data !== lastdata) {
+                            lastdata = data;
+                            loadText(latestArticle,latestArticleAuthor,latestArticleTitle,latestQrCode);
+                        }
+                    })
+                    .catch(error => console.error('Error fetching the latest article:', error));
+            }
+            setInterval(fetchLatestArticle, 5000);
+        });
+
+
+
+        function loadText(Article,Author,Title,QrCode) {
+            document.getElementById('content').innerHTML = Article
+            document.getElementById('source').innerHTML = Author
+            document.getElementById('title').innerHTML = Title
+            document.getElementById('qrCode').src = QrCode
+            document.getElementById('content').style.fontSize = '50px'
+        }
+    </script>
+</body>
+
+</html>

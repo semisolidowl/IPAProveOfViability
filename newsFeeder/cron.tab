@@ -1,0 +1,1 @@
+@reboot cd /home/pi/Documents/display && DISPLAY=:0 /usr/bin/python3 app.py >> app.log 2>&1
